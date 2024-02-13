@@ -1,6 +1,7 @@
 package application;
 	
 import controller.loginController;
+import controller.PrincipalController;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
@@ -19,8 +20,6 @@ public class Main extends Application {
 	      
 	      Scene scene = new Scene(vent);
 	      scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-	      loginController controller = loader.getController();
-	      controller.setStage(primaryStage);
 	      primaryStage.setTitle("CjFilms");
 	      primaryStage.setScene(scene);
 	      primaryStage.show();	
