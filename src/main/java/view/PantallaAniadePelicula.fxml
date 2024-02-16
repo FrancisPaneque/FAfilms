@@ -19,50 +19,42 @@
          <top>
             <Pane prefHeight="120.0" prefWidth="1024.0" style="-fx-background-color: E4D829;" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="buscador" layoutX="595.0" layoutY="40.0" prefHeight="43.0" prefWidth="261.0" style="-fx-background-color: D8DE7D;" text="Busqueda" />
                   <ImageView fitHeight="107.0" fitWidth="156.0" layoutX="-19.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/logoCJFilms-removebg-preview.png" />
+                        <Image url="@../images/logoCJFilms.png" />
                      </image>
                   </ImageView>
-                  <Label layoutX="144.0" layoutY="46.0" prefHeight="32.0" prefWidth="47.0" text="Inicio">
+                  <Label layoutX="384.0" layoutY="46.0" onMouseClicked="#showPrincipal" prefHeight="32.0" prefWidth="47.0" text="Inicio">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="216.0" layoutY="46.0" prefHeight="32.0" prefWidth="79.0" text="Películas">
+                  <Label layoutX="456.0" layoutY="46.0" onMouseClicked="#showBuscar" prefHeight="32.0" prefWidth="86.0" text="Buscador">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="320.0" layoutY="46.0" prefHeight="32.0" prefWidth="57.0" text="Series">
+                  <Label layoutX="560.0" layoutY="46.0" onMouseClicked="#showBiblioteca" prefHeight="32.0" prefWidth="87.0" text="Biblioteca">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="403.0" layoutY="46.0" prefHeight="32.0" prefWidth="47.0" text="Inicio">
+                  <Label layoutX="438.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="198.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
+                  <Label layoutX="543.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="303.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
-                     <font>
-                        <Font name="Corbel Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Label layoutX="385.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
-                     <font>
-                        <Font name="Corbel Bold" size="20.0" />
-                     </font>
-                  </Label>
-                  <Circle layoutX="970.0" layoutY="60.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fill="DODGERBLUE" layoutX="969.75" layoutY="60.0" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Button fx:id="buscar" layoutX="856.0" layoutY="48.0" mnemonicParsing="false" onAction="#Buscar" prefHeight="25.0" prefWidth="51.0" text="Buscar" />
+                  <Circle fill="#fffefe" layoutX="970.0" layoutY="60.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
+                  <ImageView fitHeight="50.0" fitWidth="54.0" layoutX="945.0" layoutY="37.0" onMouseClicked="#showUsuario" pickOnBounds="true" preserveRatio="true">
+                     <image>
+                        <Image url="@../images/user.png" />
+                     </image>
+                  </ImageView>
                </children>
             </Pane>
          </top>
@@ -71,36 +63,36 @@
                <children>
                   <ImageView fitHeight="575.0" fitWidth="1048.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/photo_2023-12-05_11-06-59.jpg" />
+                        <Image url="@../images/fondo.jpg" />
                      </image>
                   </ImageView>
                   <ScrollPane layoutX="166.0" layoutY="-3.0" prefHeight="582.0" prefWidth="692.0">
                      <content>
 				       <Pane prefHeight="754.0" prefWidth="690.0" style="-fx-background-color: D8DE7D;">
 					       <children>
-					          <Label layoutX="14.0" layoutY="46.0" text=" Titulo:">
+					          <Label layoutX="14.0" layoutY="46.0" text=" Titulo*:">
 					             <font>
 					                <Font name="System Bold" size="16.0" />
 					             </font>
 					          </Label>
 					          <TextField fx:id="txtTitulo" layoutX="83.0" layoutY="46.0" prefHeight="25.0" prefWidth="575.0" style="-fx-background-color: #edf29b;" />
-					          <Label layoutX="465.0" layoutY="119.0" text=" Año:">
+					          <Label layoutX="483.0" layoutY="119.0" text=" Año:">
 					             <font>
 					                <Font name="System Bold" size="16.0" />
 					             </font>
 					          </Label>
-					          <TextField fx:id="txtAnio" layoutX="515.0" layoutY="119.0" prefHeight="25.0" prefWidth="136.0" style="-fx-background-color: #edf29b;">
+					          <TextField fx:id="txtAnio" layoutX="540.0" layoutY="119.0" onMouseClicked="#desaparedeTexto" prefHeight="25.0" prefWidth="111.0" promptText="(2024-12-31)" style="-fx-background-color: #edf29b;">
 					             <font>
 					                <Font name="System Bold" size="12.0" />
 					             </font>
 					          </TextField>
-					          <TextField fx:id="txtTitulo1" layoutX="112.0" layoutY="119.0" prefHeight="25.0" prefWidth="314.0" style="-fx-background-color: #edf29b;" />
+					          <TextField fx:id="txtCompañia" layoutX="63.0" layoutY="119.0" prefHeight="25.0" prefWidth="116.0" style="-fx-background-color: #edf29b;" />
 					          <Label layoutX="20.0" layoutY="188.0" text="Descripción:">
 					             <font>
 					                <Font name="System Bold" size="16.0" />
 					             </font>
 					          </Label>
-					          <Label layoutX="20.0" layoutY="119.0" text="Compañia:">
+					          <Label layoutX="20.0" layoutY="119.0" text="ID*:">
 					             <font>
 					                <Font name="System Bold" size="16.0" />
 					             </font>
@@ -115,12 +107,12 @@
 					                <TextArea fx:id="TxtADescripcion" prefHeight="106.0" prefWidth="642.0" style="-fx-background-color: #edf29b;" />
 					             </content>
 					          </ScrollPane>
-					          <ScrollPane fx:id="TxtAActores" layoutX="22.0" layoutY="367.0" prefHeight="58.0" prefWidth="641.0">
+					          <ScrollPane layoutX="22.0" layoutY="367.0" prefHeight="58.0" prefWidth="641.0">
 					             <content>
-					                <TextArea fx:id="TxtAArea" prefHeight="58.0" prefWidth="619.0" style="-fx-background-color: #edf29b;" />
+					                <TextArea fx:id="TxtAActores" prefHeight="58.0" prefWidth="619.0" style="-fx-background-color: #edf29b;" />
 					             </content>
 					          </ScrollPane>
-					          <ScrollPane fx:id="TxtAActores1" layoutX="22.0" layoutY="457.0" prefHeight="58.0" prefWidth="641.0">
+					          <ScrollPane layoutX="22.0" layoutY="457.0" prefHeight="58.0" prefWidth="641.0">
 					             <content>
 					                <TextArea fx:id="TxtAGeneros" prefHeight="58.0" prefWidth="619.0" style="-fx-background-color: #edf29b;" />
 					             </content>
@@ -138,7 +130,7 @@
 					          </Label>
 					          <ScrollPane layoutX="114.0" layoutY="533.0" prefHeight="37.0" prefWidth="531.0">
 					             <content>
-					                <TextArea fx:id="TxtADescripcion11" prefHeight="39.0" prefWidth="521.0" style="-fx-background-color: #edf29b;" />
+					                <TextArea fx:id="TxtADirectores" prefHeight="39.0" prefWidth="521.0" style="-fx-background-color: #edf29b;" />
 					             </content>
 					          </ScrollPane>
 					          <Label layoutX="25.0" layoutY="603.0" text="Plataforma:">
@@ -148,7 +140,7 @@
 					          </Label>
 					          <ScrollPane layoutX="114.0" layoutY="597.0" prefHeight="37.0" prefWidth="531.0">
 					             <content>
-					                <TextArea fx:id="TxtADescripcion111" prefHeight="39.0" prefWidth="521.0" style="-fx-background-color: #edf29b;" />
+					                <TextArea fx:id="TxtAPlataforma" prefHeight="39.0" prefWidth="521.0" style="-fx-background-color: #edf29b;" />
 					             </content>
 					          </ScrollPane>
 					       </children>

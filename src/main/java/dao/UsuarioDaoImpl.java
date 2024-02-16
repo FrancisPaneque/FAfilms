@@ -17,8 +17,12 @@ public class UsuarioDaoImpl extends CommonDaoImpl<Usuarios> implements UsuarioDa
 		this.session = session;
 	}
 	
-	public void insertToUsuario(Usuarios user) {
+	public void insertUsuario(Usuarios user) {
 		super.insert(user);
+	}
+	
+	public void updateusuario(Usuarios user) {
+		super.update(user);
 	}
 	
 	@Override

@@ -8,7 +8,7 @@ import javax.persistence.Table;
 
 @Entity
 public class Usuarios {
-	
+	@Id
 	@Column(name = "correo_electronico")
 	private String correo;
 	
@@ -21,34 +21,15 @@ public class Usuarios {
 	@Column(name = "contraseña_usuario")
 	private String password;
 	
-	@Id
-	@Column(name = "id_usuario")
-	private int id;
-	
 	public Usuarios() {
 	}
 	
-	public Usuarios(int id, String usuario, String correo, String password, String numeroTlf) {
-		setId(id);
+	public Usuarios(String usuario, String correo, String password) {
 		setUsuario(usuario);
 		setCorreo(correo);
 		setPassword(password);
-		setNumeroTlf(numeroTlf);
 	}
 	
-	/**
-	 * @return the id
-	 */
-	public int getId() {
-		return id;
-	}
-
-	/**
-	 * @param id the id to set
-	 */
-	public void setId(int id) {
-		this.id = id;
-	}
 	/**
 	 * @return the numeroTlf
 	 */

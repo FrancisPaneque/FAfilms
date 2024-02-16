@@ -2,17 +2,39 @@ package controller;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.TextAlignment;
+import javafx.stage.Stage;
+import javafx.scene.layout.AnchorPane;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.StackPane;
+import javafx.scene.layout.VBox;
+import javafx.scene.control.ScrollPane;
 import models.*;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.OkHttpClient;
 import com.google.gson.Gson;
+
+import Utils.CSVExporter;
+import Utils.GestorSQL;
+
+import java.io.File;
 import java.io.IOException;
 
 
@@ -27,12 +49,14 @@ public class menuController {
     private static final String URL_CAST = "https://api.themoviedb.org/3/movie";
     private static final String IMAGE_URL = "https://image.tmdb.org/t/p/w500";    
     
+    private Stage stage;
+    public static int id;
     // Elementos de la interfaz de usuario que se actualizarán
     @FXML
     private Label plataforma;
 
     @FXML
-    private TextArea actores;
+    private static TextArea actores;
 
     @FXML
     private Button busca;
@@ -69,17 +93,212 @@ public class menuController {
 
     @FXML
     private Label titulo;
-    
+
     @FXML
     private Label titulo2;
     
     @FXML
-    private ImageView imgActor1;
+    private ImageView estrella;
+    
+    @FXML
+    private ImageView check;
 
     @FXML
-    private Label nombreActor1;
+    private ScrollPane zonaActores;
     
+    private boolean  visto = false;
+    private boolean guardado = false;
+    
+    // Establece el stage
+    public void setStage(Stage Stage) {
+      this.stage = Stage;
+    }
+    
+    // Establece el stage
+    public void setId(int id) {
+      this.id = id;
+    }
 
+    @FXML
+    void guardar(MouseEvent event) {
+    	PeliculasGuardadas film = new PeliculasGuardadas(id);
+    	if (guardado) {
+    		Image miImagen = new Image(getClass().getResourceAsStream("/images/noGuardado.png"));
+        	estrella.setImage(miImagen);
+        	guardado = false;
+        	if (GestorSQL.deletePeliculaGuardadas(film)) {
+        		System.out.println("delete guardadas okey");
+        	}
+    	} else {
+    		Image miImagen = new Image(getClass().getResourceAsStream("/images/guardado.png"));
+    		estrella.setImage(miImagen);
+        	guardado = true;
+        	film.setUsuario(GestorSQL.getUsuarioActivo());
+        	film.setPelicula(titulo.getText());
+        	if (GestorSQL.insertPeliculaGuardadas(film)) {
+        		System.out.println("insert guardadas okey");
+        	}
+    	}
+    }
+    
+    @FXML
+    void visto(MouseEvent event) {
+    	PeliculasVistas film = new PeliculasVistas(id);
+    	if (visto) {
+    		Image miImagen = new Image(getClass().getResourceAsStream("/images/noVisto.png"));
+        	check.setImage(miImagen);
+        	visto = false;
+        	if (GestorSQL.deletePeliculaVista(film)) {
+        		System.out.println("delete vista okey");
+        	}
+    	} else {
+    		Image miImagen = new Image(getClass().getResourceAsStream("/images/visto.png"));
+    		check.setImage(miImagen);
+        	visto = true;
+        	film.setUsuario(GestorSQL.getUsuarioActivo());
+        	film.setPelicula(titulo.getText());
+        	if (GestorSQL.insertPeliculaVista(film)) {
+        		System.out.println("insert vista okey");
+        	}
+        	
+    	}
+    	
+    }
+
+    @FXML
+    void showBiblioteca(MouseEvent event) {
+    	 try {
+ 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PantallaBiblioteca.fxml"));
+ 	     	Pane vent = (Pane) loader.load();
+ 	     	Scene scene = new Scene(vent);
+ 	     	Stage stage = new Stage();
+ 	     	BibliotecaController controller = loader.getController();
+ 	     	controller.setStage(stage);
+ 	     	stage.setTitle("CjFilms");
+ 	  	    stage.setScene(scene);
+ 	  	    stage.show();
+ 	  	    this.stage.close();
+ 		 } catch (Exception e) {
+ 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      	    alert.setTitle("Error");
+      	    alert.setHeaderText("Error: ");
+      	    alert.setContentText("Esa funcionalidad no esta disponible");
+      	    alert.showAndWait();
+ 		}
+    }
+    
+    @FXML
+    void showUsuario(MouseEvent event) throws IOException {
+    	FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PantallaUsuario.fxml"));
+     	Pane vent = (Pane) loader.load();
+     	Scene scene = new Scene(vent);
+     	Stage stage = new Stage();
+     	UsuarioController controller = loader.getController();
+     	controller.setStage(stage);
+     	stage.setTitle("CjFilms");
+  	    stage.setScene(scene);
+  	    stage.show();
+  	    this.stage.close();
+    }
+    
+    @FXML
+    void showBuscar(MouseEvent event) {
+    	try {
+ 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PantallaBuscador.fxml"));
+ 	     	Pane vent = (Pane) loader.load();
+ 	     	Scene scene = new Scene(vent);
+ 	     	Stage stage = new Stage();
+ 	     	buscadorController controller = loader.getController();
+ 	     	controller.setStage(stage);
+ 	     	stage.setTitle("CjFilms");
+ 	  	    stage.setScene(scene);
+ 	  	    stage.show();
+ 	  	    this.stage.close();
+ 		 } catch (Exception e) {
+ 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      	    alert.setTitle("Error");
+      	    alert.setHeaderText("Error: ");
+      	    alert.setContentText("Esa funcionalidad no esta disponible");
+      	    alert.showAndWait();
+ 		}
+    }
+    
+    @FXML
+    void showAniadePelicula(MouseEvent event) throws IOException {
+ 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PantallaAniadePelicula.fxml"));
+ 	     	Pane vent = (Pane) loader.load();
+ 	     	Scene scene = new Scene(vent);
+ 	     	Stage stage = new Stage();
+ 	     	AniadeController controller = loader.getController();
+ 	     	controller.setStage(stage);
+ 	     	stage.setTitle("CjFilms");
+ 	  	    stage.setScene(scene);
+ 	  	    stage.show();
+ 	  	    this.stage.close();
+    }
+
+    @FXML
+    void showInicio(MouseEvent event) {
+    	try {
+ 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/PantallaPrincipal.fxml"));
+ 	     	Pane vent = (Pane) loader.load();
+ 	     	Scene scene = new Scene(vent);
+ 	     	Stage stage = new Stage();
+ 	     	PrincipalController controller = loader.getController();
+ 	     	controller.setStage(stage);
+ 	     	stage.setTitle("CjFilms");
+ 	  	    stage.setScene(scene);
+ 	  	    stage.show();
+ 	  	    this.stage.close();
+ 		 } catch (Exception e) {
+ 			Alert alert = new Alert(Alert.AlertType.INFORMATION);
+      	    alert.setTitle("Error");
+      	    alert.setHeaderText("Error: ");
+      	    alert.setContentText("Esa funcionalidad no esta disponible");
+      	    alert.showAndWait();
+ 		}
+    }
+
+    @FXML
+    void exportar(ActionEvent event) throws IOException {
+        // Obtener la película actual
+      int idpro = id;
+    Movie datosPeli = getInfoMovie(idpro);
+    Credits credits = getInfoCast(datosPeli.getId());
+    Cast[] cast = credits.getActors();
+
+    if (datosPeli != null) {
+        // Obtener el directorio de descargas del usuario
+        String downloadsDir = System.getProperty("user.home") + File.separator + "Downloads";
+
+        // Crear el archivo en el directorio de descargas
+        String fileName = downloadsDir + File.separator + "datos_pelicula.csv";
+        File file = new File(fileName);
+
+        // Exportar los datos de la película al archivo CSV en el directorio de descargas
+	        try {
+	            CSVExporter.exportMovieData(file.getAbsolutePath(), datosPeli, cast);
+	            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+	            alert.setTitle("Éxito");
+	            alert.setHeaderText(null);
+	            alert.setContentText("Los datos de la película se han exportado correctamente en el directorio de descargas.");
+	            alert.showAndWait();
+	        } catch (IOException e) {
+	            Alert alert = new Alert(Alert.AlertType.ERROR);
+	            alert.setTitle("Error");
+	            alert.setHeaderText(null);
+	            alert.setContentText("Ocurrió un error al exportar los datos de la película.");
+	            alert.showAndWait();
+	            e.printStackTrace();
+	        }
+        } else {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("No se pueden exportar los datos de la película porque no se ha encontrado información.");
+            alert.showAndWait();
+        }
+    }
     /**
      * Realiza una búsqueda de película al hacer clic en el botón de búsqueda.
      *
@@ -98,14 +317,51 @@ public class menuController {
             	Crew[] crew = credits.getCrew();
             	Genres[] genero = datosPeli.getGenres();
                 // Actualiza la interfaz de usuario con la información obtenida
-                updateUI(datosPeli, actores, cast, crew, genero, titulo, fechaEstreno, sinopsis, cartel, lengua, directores, generos, guionistas, duracion, puntuacion, titulo2, imgActor1, nombreActor1);
+                updateUI(datosPeli, actores, cast, crew, genero, titulo, fechaEstreno, sinopsis, cartel, lengua, directores, generos, guionistas, duracion, puntuacion, titulo2, zonaActores);
             } catch (IOException ex) {
                 ex.printStackTrace();
             }
         }
     }
 
-
+    @FXML
+    public void initialize() throws IOException{
+    	
+    	if (peliculaVistas(id)) {
+    		Image miImagen = new Image(getClass().getResourceAsStream("/images/visto.png"));
+    		check.setImage(miImagen);
+    		visto = true;
+    	} else {
+    		Image miImagen = new Image(getClass().getResourceAsStream("/images/noVisto.png"));
+        	check.setImage(miImagen);
+        	visto = false;
+    	}
+    	
+    	if (peliculaGuardada(id)) {
+    		Image miImagen = new Image(getClass().getResourceAsStream("/images/guardado.png"));
+        	estrella.setImage(miImagen);
+        	guardado = true;
+    	} else {
+    		Image miImagen = new Image(getClass().getResourceAsStream("/images/noGuardado.png"));
+        	estrella.setImage(miImagen);
+        	guardado= false;
+    	}
+    	
+    	// Obtiene la palabra de búsqueda desde el campo de texto
+        try {
+            // Obtiene la información de la película mediante la API 
+            Movie datosPeli = getInfoMovie(id);
+        	Credits credits = getInfoCast(datosPeli.getId());
+        	Cast[] cast = credits.getActors();
+        	Crew[] crew = credits.getCrew();
+        	Genres[] genero = datosPeli.getGenres();
+            // Actualiza la interfaz de usuario con la información obtenida
+            updateUI(datosPeli, actores, cast, crew, genero, titulo, fechaEstreno, sinopsis, cartel, lengua, directores, generos, guionistas, duracion, puntuacion, titulo2, zonaActores);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+        }
+        
+    }
     /**
      * Obtiene información sobre una película a partir de la API de themoviedb.org.
      *
@@ -113,11 +369,12 @@ public class menuController {
      * @return Información de la película obtenida de la API.
      * @throws IOException Si ocurre un error de entrada/salida durante la solicitud HTTP.
      */
-    private Movie getInfoMovie(int id) throws IOException {
+    private static Movie getInfoMovie(int id) {
+    	Movie movie = null;
     	OkHttpClient client = new OkHttpClient();
 
     	Request request = new Request.Builder()
-    	  .url("https://api.themoviedb.org/3/movie/"+ id +"?language=en-US")
+    	  .url("https://api.themoviedb.org/3/movie/"+ id +"?language=es-ES")
     	  .get()
     	  .addHeader("accept", "application/json")
     	  .addHeader("Authorization", "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiJiZWYzMDM2OWE0MDRmOWExYTkyM2JjNDhmZmJjMDBiYyIsInN1YiI6IjY1NzgxNTM4YWY1OGNiMDEyMzZjNTI1MSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.bCxvNQumYvyL9RcsBFeumwiVcdcUIWmhdApZAFLI1oA")
@@ -127,7 +384,13 @@ public class menuController {
         try (Response response = client.newCall(request).execute()) {
             // Verifica si la solicitud fue exitosa (código de estado 200)
             if (!response.isSuccessful()) {
+            	Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error: ");
+                alert.setContentText("Reinice la aplicacion: conexión nula");
+                alert.showAndWait();
                 throw new IOException("Error en la solicitud: " + response);
+                
             }
 
             // Obtiene el cuerpo de la respuesta
@@ -135,10 +398,18 @@ public class menuController {
 
             // Utiliza Gson para convertir el cuerpo de la respuesta a un objeto Movie
             Gson gson = new Gson();
-            return gson.fromJson(responseBody, Movie.class);
-        }
+            movie = gson.fromJson(responseBody, Movie.class);
+        } catch (IOException e) {
+        	Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText("Error: ");
+            alert.setContentText("Not Found. Película no encontrada o conexión nula");
+            alert.showAndWait();
+			e.printStackTrace();
+		}
+        return movie;
     }
-    
+
     /**
      * Obtiene información sobre el elenco de una película a partir de la API de themoviedb.org.
      *
@@ -146,7 +417,7 @@ public class menuController {
      * @return Información del elenco obtenida de la API.
      * @throws IOException Si ocurre un error de entrada/salida durante la solicitud HTTP.
      */
-    private Credits getInfoCast(int id) throws IOException {
+    private static Credits getInfoCast(int id) throws IOException {
     	OkHttpClient client = new OkHttpClient();
 
         // Construye la URL para la solicitud de elenco
@@ -171,8 +442,8 @@ public class menuController {
             return gson.fromJson(responseBody, Credits.class);
         }
     }
-    
-    
+
+
 
     /**
      * Actualiza la interfaz de usuario con la información de la película.
@@ -183,8 +454,8 @@ public class menuController {
      * @param sinopsis   Etiqueta para mostrar la fecha de estreno de la película.
      * @param poster_path    ImageView para mostrar el cartel de la película.
      */
-    private void updateUI(Movie datosPeli,TextArea actores, Cast[] cast, Crew[] crew, Genres[] generos, Label titulo, Label fechaDeEstreno, TextArea sinopsis, ImageView cartel, Label lengua,
-    		Label directores, Label genero, Label guionistas, Label duracion, Label puntuacion, Label titulo2, ImageView imgActor, Label nombreActor) {
+    private static void updateUI(Movie datosPeli,TextArea actores, Cast[] cast, Crew[] crew, Genres[] generos, Label titulo, Label fechaDeEstreno, TextArea sinopsis, ImageView cartel, Label lengua,
+    	 Label directores, Label genero, Label guionistas, Label duracion, Label puntuacion, Label titulo2, ScrollPane zonaActores) {
         // Actualiza los elementos de la interfaz con la información de la película
         if (datosPeli != null) {
         	//Actualiza titulo
@@ -220,13 +491,23 @@ public class menuController {
             guionistas.setText(guionista);
             //Actualiza duracion
             duracion.setText(Integer.toString(datosPeli.getRuntime()) + " min");
-            //Actualiza reparto
-            String posterAct = cast[0].getProfilePath();
-            if (posterAct != null && !posterAct.isEmpty()) {
-                Image posterImage = new Image(IMAGE_URL + posterAct);
-                imgActor.setImage(posterImage);
-            }
-            nombreActor.setText(cast[0].getName());
+            
+            //Actualiza todos los actores
+            // Se llama al método imprimirPeliculas para obtener el HBox con las imágenes y títulos de los actores.
+            HBox actoresBox;
+            try {
+                actoresBox = imprimirActores(cast);
+                // Se agrega el HBox de actores al contenido del ScrollPane existente.
+                zonaActores.setContent(actoresBox);
+            } catch (IOException e) {
+            	Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Error");
+                alert.setHeaderText("Error: ");
+                alert.setContentText("No se encontraron actores para esta pelicula");
+                alert.showAndWait();
+                actoresBox = null;
+            }          
+            
             //Actualiza generos
             String genre = "";
             for (Genres genres : generos) {
@@ -249,15 +530,82 @@ public class menuController {
             }
             //Actualiza el titulo2
             titulo2.setText(datosPeli.getTitle());
+            
         }
     }
     
-    private void actualizaActor(ImageView imgActor, Label nombreActor, Cast[] actores) {
-    	String poster = actores[0].getProfilePath();
-        if (poster != null && !poster.isEmpty()) {
-            Image posterImage = new Image(IMAGE_URL + poster);
-            imgActor.setImage(posterImage);
+    /**
+     * Método para imprimir las imágenes y títulos de las películas en un HBox.
+     *
+     * @param actores Arreglo de actores para mostrar.
+     * @return HBox que contiene las imágenes y títulos de las películas.
+     * @throws IOException Si hay un problema al cargar las imágenes.
+     */
+    private static HBox imprimirActores(Cast[] actores) throws IOException {
+        // Se crea un HBox para contener las imágenes y títulos de los actores.
+        HBox hbox = new HBox();
+
+        // Se itera sobre el arreglo de actores para crear y agregar las imágenes y títulos al HBox.
+        for (int i = 0; i < actores.length; i++) {
+        	if( actores[i].getKnownForDepartment().equals("Acting") && actores[i].getProfilePath() != null) {
+        		String imageUrl = "https://image.tmdb.org/t/p/w500/" + actores[i].getProfilePath();
+	            System.out.println(actores[i].getProfilePath());
+	            // Se crea una ImageView para mostrar la imagen del actor.
+	            ImageView imageView = new ImageView();
+	            Image image = new Image(imageUrl);
+	            imageView.setImage(image);
+	            imageView.setFitWidth(70); // Establece el ancho deseado
+	            imageView.setFitHeight(95); // Establece la altura deseada
+	
+	            // Se crea una etiqueta para mostrar el nombre del actor.
+	            String nombreActor = actores[i].getName();
+	            int indiceEspacio = nombreActor.indexOf(' ');
+	            String textoDespuesEspacio = nombreActor.substring(indiceEspacio + 1, indiceEspacio + 4);
+	            // Construir el texto completo
+	            String textoCompleto = nombreActor.substring(0, indiceEspacio + 1) + textoDespuesEspacio;
+	            // Crear el label con el texto completo
+	            Label labelActor = new Label(textoCompleto + ".");
+	
+	            // Se crea un VBox para contener la imagen y el nombre del actor.
+	            VBox vbox = new VBox();
+	            vbox.getChildren().addAll(imageView, labelActor);
+	            vbox.setSpacing(15); // Espacio entre la imagen y el nombre
+	
+	            // Se añade el VBox al HBox.
+	            hbox.getChildren().add(vbox);
+        	}
         }
-        nombreActor.setText(actores[0].getName());
+
+        // Se devuelve el HBox con las imágenes y títulos de los actores.
+        return hbox;
     }
+
+    /**
+     * Metodo que busca el id de la pelicula en la base de datos
+     *  * @param id pelicula
+     * @return true, si la pelicula esta en la base de datos y false, si la pelicula no esta en la base de datos
+     */
+    private boolean peliculaGuardada(int id) {
+    	try  {
+    		PeliculasGuardadas film = GestorSQL.searchPeliculaGuardadas(id);
+    		return true;
+    	} catch (Exception e) {
+    		return false;
+		}
+    }
+    
+    /**
+     * Metodo que busca el id de la pelicula en la base de datos
+     * @param id pelicula
+     * @return true, si la pelicula esta en la base de datos y false, si la pelicula no esta en la base de datos
+     */
+    private boolean peliculaVistas(int id) {
+    	try {
+    		PeliculasVistas film = GestorSQL.searchPeliculaVista(id);
+    		return true;
+    	} catch (Exception e) {
+    		return false;
+		}
+    }
+    
 }

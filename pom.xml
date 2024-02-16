@@ -51,11 +51,6 @@
 		    <artifactId>jaxb-api</artifactId>
 		    <version>2.3.1</version> <!-- O la versión más reciente disponible -->
 		</dependency>
-		<dependency>
-			<groupId>MiProyectoPeli</groupId>
-			<artifactId>MiProyectoPeli</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
-		</dependency>
   </dependencies>
   
   <build>

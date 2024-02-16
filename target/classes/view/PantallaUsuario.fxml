@@ -19,50 +19,46 @@
          <top>
             <Pane prefHeight="120.0" prefWidth="1024.0" style="-fx-background-color: E4D829;" BorderPane.alignment="CENTER">
                <children>
-                  <TextField fx:id="buscador" layoutX="595.0" layoutY="40.0" prefHeight="43.0" prefWidth="261.0" style="-fx-background-color: D8DE7D;" text="Busqueda" />
                   <ImageView fitHeight="107.0" fitWidth="156.0" layoutX="-19.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/logoCJFilms-removebg-preview.png" />
+                        <Image url="@../images/logoCJFilms.png" />
                      </image>
                   </ImageView>
-                  <Button fx:id="busca" layoutX="856.0" layoutY="48.0" mnemonicParsing="false" onAction="#buscar" text="Bucar" />
-                  <Label layoutX="144.0" layoutY="46.0" prefHeight="32.0" prefWidth="47.0" text="Inicio">
+                  <Label layoutX="332.0" layoutY="46.0" onMouseClicked="#showInicio" prefHeight="32.0" prefWidth="47.0" text="Inicio">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="216.0" layoutY="46.0" prefHeight="32.0" prefWidth="79.0" text="Películas">
+                  <Label layoutX="404.0" layoutY="46.0" onMouseClicked="#showBuscar" prefHeight="32.0" prefWidth="89.0" text="Buscador">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="320.0" layoutY="46.0" prefHeight="32.0" prefWidth="57.0" text="Series">
+                  <Label layoutX="508.0" layoutY="46.0" onMouseClicked="#showBiblioteca" prefHeight="32.0" prefWidth="90.0" text="Biblioteca">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="403.0" layoutY="46.0" prefHeight="32.0" prefWidth="47.0" text="Inicio">
+                  <Label layoutX="623.0" layoutY="46.0" onMouseClicked="#showAniadePelicula" prefHeight="32.0" prefWidth="65.0" text="Añadir">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="198.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
+                  <Label layoutX="386.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="303.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
+                  <Label layoutX="491.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Label layoutX="385.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
+                  <Label layoutX="605.0" layoutY="46.0" prefHeight="32.0" prefWidth="12.0" text="/">
                      <font>
                         <Font name="Corbel Bold" size="20.0" />
                      </font>
                   </Label>
-                  <Circle layoutX="970.0" layoutY="60.0" radius="36.0" stroke="BLACK" strokeType="INSIDE" />
-                  <Circle fill="DODGERBLUE" layoutX="969.75" layoutY="60.0" radius="35.0" stroke="BLACK" strokeType="INSIDE" />
                </children>
             </Pane>
          </top>
@@ -71,7 +67,7 @@
                <children>
                   <ImageView fitHeight="575.0" fitWidth="1048.0" layoutX="1.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../images/photo_2023-12-05_11-06-59.jpg" />
+                        <Image url="@../images/fondo.jpg" />
                      </image>
                   </ImageView>
                   <ScrollPane layoutX="166.0" layoutY="-3.0" prefHeight="582.0" prefWidth="692.0">
@@ -109,22 +105,21 @@
                                     <Font name="System Bold" size="14.0" />
                                  </font>
                               </Label>
-                              <Label fx:id="salidaCorreo" layoutX="165.0" layoutY="129.0" prefHeight="17.0" prefWidth="150.0" />
-                              <Label fx:id="salidaNombre" layoutX="164.0" layoutY="178.0" prefHeight="17.0" prefWidth="150.0" />
-                              <Label fx:id="salidaContraseña" layoutX="164.0" layoutY="227.0" prefHeight="17.0" prefWidth="150.0" />
-                              <Label fx:id="salidaNumeroTlf" layoutX="164.0" layoutY="281.0" prefHeight="17.0" prefWidth="150.0" text="  " />
-                              <Circle fx:id="imagenPerfil" fill="#08080869" layoutX="540.0" layoutY="134.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                              <TextField fx:id="txtSalidaCorreo" editable="false" layoutX="146.0" layoutY="125.0" style="-fx-background-color: D8DE7D;" />
+                              <TextField fx:id="txtSalidaNombre" editable="false" layoutX="146.0" layoutY="174.0" style="-fx-background-color: D8DE7D;" />
+                              <TextField fx:id="txtSalidaContrasenia" editable="false" layoutX="146.0" layoutY="221.0" style="-fx-background-color: D8DE7D;" />
+                              <TextField fx:id="txtSalidaNumeroTlf" editable="false" layoutX="146.0" layoutY="270.0" style="-fx-background-color: D8DE7D;" />
                               <Label fx:id="nombreUsuario" layoutX="488.0" layoutY="244.0" text="Nombre de Usuario" />
-                              <Label layoutX="66.0" layoutY="345.0" text="Mi Lista">
-                                 <font>
-                                    <Font name="System Bold" size="18.0" />
-                                 </font>
-                              </Label>
-                              <Line endX="128.60003662109375" layoutX="151.0" layoutY="373.0" startX="-100.0" strokeMiterLimit="15.0" />
-                              <Button fx:id="exportar" layoutX="180.0" layoutY="346.0" mnemonicParsing="false" style="-fx-background-color: 9B9B9B; -fx-background-radius: 30;" text="exportar" />
-                              <ScrollPane layoutX="-2.0" layoutY="379.0" prefHeight="200.0" prefWidth="694.0" />
-                              <Button fx:id="editarUsuario" layoutX="510.0" layoutY="269.0" mnemonicParsing="false" style="-fx-background-color: 9B9B9B; -fx-background-radius: 30;" text="Editar" />
-                              <Button fx:id="cerrarSesion" layoutX="490.0" layoutY="311.0" mnemonicParsing="false" style="-fx-background-color: 9B9B9B; -fx-background-radius: 30;" text="Cerrar Sesión" />
+                              <TextField fx:id="txtNombreUsuario" editable="false" layoutX="466.0" layoutY="240.0" style="-fx-background-color: D8DE7D;" />
+                              <Button fx:id="editarUsuario" layoutX="510.0" layoutY="269.0" mnemonicParsing="false" onAction="#editUsuario" style="-fx-background-color: 9B9B9B; -fx-background-radius: 30;" text="Editar" />
+                              <Button fx:id="cerrarSesion" layoutX="490.0" layoutY="311.0" mnemonicParsing="false" onAction="#showLogin" style="-fx-background-color: 9B9B9B; -fx-background-radius: 30;" text="Cerrar Sesión" />
+                              <Circle fill="#f4f4f4" layoutX="540.0" layoutY="134.0" radius="100.0" stroke="BLACK" strokeType="INSIDE" />
+                              <ImageView fitHeight="156.0" fitWidth="159.0" layoutX="462.0" layoutY="56.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../images/user.png" />
+                                 </image>
+                              </ImageView>
+                              <Button fx:id="guardaUsuario" layoutX="487.0" layoutY="270.0" mnemonicParsing="false" onAction="#guardaUsuario" style="-fx-background-color: 9B9B9B; -fx-background-radius: 30;" text="Guardar cambios" visible="false" />
                            </children>
                         </Pane>
                      </content>

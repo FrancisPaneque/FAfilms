@@ -14,6 +14,9 @@
         <property name="hibernate.show_sql">true</property>
         <property name="hibernate.validator.apply_to_ddl">false</property>
         
-        <mapping class="models.Usuarios"/>
+        <mapping class= "models.Usuarios"></mapping>
+        <mapping class= "models.Pelicula"></mapping>
+        <mapping class= "models.PeliculasVistas"></mapping>
+        <mapping class= "models.PeliculasGuardadas"></mapping>
     </session-factory>
 </hibernate-configuration>

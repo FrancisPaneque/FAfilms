@@ -4,28 +4,28 @@ public class Cast {
 	private boolean adult;
     private int gender;
     private int id;
-    private String knownForDepartment;
+    private String known_for_department;
     private String name;
     private String originalName;
     private double popularity;
-    private String profilePath;
+    private String profile_path;
     private int castId;
     private String character;
     private String creditId;
     private int order;
 
     // Constructor
-    public Cast(boolean adult, int gender, int id, String knownForDepartment, String name,
-                 String originalName, double popularity, String profilePath, int castId,
+    public Cast(boolean adult, int gender, int id, String known_for_department, String name,
+                 String originalName, double popularity, String profile_path, int castId,
                  String character, String creditId, int order) {
         this.adult = adult;
         this.gender = gender;
         this.id = id;
-        this.knownForDepartment = knownForDepartment;
+        this.known_for_department = known_for_department;
         this.name = name;
         this.originalName = originalName;
         this.popularity = popularity;
-        this.profilePath = profilePath;
+        this.profile_path = profile_path;
         this.castId = castId;
         this.character = character;
         this.creditId = creditId;
@@ -57,11 +57,11 @@ public class Cast {
 	}
 
 	public String getKnownForDepartment() {
-		return knownForDepartment;
+		return known_for_department;
 	}
 
 	public void setKnownForDepartment(String knownForDepartment) {
-		this.knownForDepartment = knownForDepartment;
+		this.known_for_department = knownForDepartment;
 	}
 
 	public String getName() {
@@ -89,11 +89,11 @@ public class Cast {
 	}
 
 	public String getProfilePath() {
-		return profilePath;
+		return profile_path;
 	}
 
 	public void setProfilePath(String profilePath) {
-		this.profilePath = profilePath;
+		this.profile_path = profilePath;
 	}
 
 	public int getCastId() {

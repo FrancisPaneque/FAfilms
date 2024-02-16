@@ -1,7 +1,8 @@
-/Utils/
-/application/
 /controller/
-/dao/
+/application/
+/view/
+/Utils/
 /models/
-/META-INF/
+/dao/
 /images/
+/META-INF/
